@@ -6,15 +6,14 @@ from . import abstract
 
 
 class RaggedContiguousSubarray(abstract.CompressedSubarray):
-    '''TODO
+    """TODO"""
 
-    '''
     def __getitem__(self, indices):
-        '''x.__getitem__(indices) <==> x[indices]
+        """x.__getitem__(indices) <==> x[indices]
 
-    Returns a numpy array.
+        Returns a numpy array.
 
-        '''
+        """
         # The compressed array
         array = self.array
 
@@ -25,10 +24,10 @@ class RaggedContiguousSubarray(abstract.CompressedSubarray):
         u_indices = [slice(None)] * uarray.ndim
 
         compression = self.compression
-        instance_axis = compression['instance_axis']
-        instance_index = compression['instance_index']
-        element_axis = compression['c_element_axis']
-        sample_indices = compression['c_element_indices']
+        instance_axis = compression["instance_axis"]
+        instance_index = compression["instance_index"]
+        element_axis = compression["c_element_axis"]
+        sample_indices = compression["c_element_indices"]
 
         u_indices[instance_axis] = instance_index
         u_indices[element_axis] = slice(
@@ -41,7 +40,8 @@ class RaggedContiguousSubarray(abstract.CompressedSubarray):
             return uarray
 
         indices = parse_indices(self.shape, indices)
-        
+
         return get_subspace(uarray, indices)
+
 
 # --- End: class

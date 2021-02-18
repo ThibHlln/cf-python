@@ -6,13 +6,12 @@ from . import abstract
 
 
 class RaggedIndexedSubarray(abstract.CompressedSubarray):
-    """TODODASK
+    """TODODASK"""
 
-    """
     def __getitem__(self, indices):
         """x.__getitem__(indices) <==> x[indices]
 
-    Returns a numpy array.
+        Returns a numpy array.
 
         """
         # The compressed array
@@ -26,16 +25,16 @@ class RaggedIndexedSubarray(abstract.CompressedSubarray):
 
         compression = self.compression
 
-        instance_axis = compression['instance_axis']
-        instance_index = compression['instance_index']
-        element_axis = compression['i_element_axis']
-        sample_indices = compression['i_element_indices']
+        instance_axis = compression["instance_axis"]
+        instance_index = compression["instance_index"]
+        element_axis = compression["i_element_axis"]
+        sample_indices = compression["i_element_indices"]
 
         p_indices[instance_axis] = instance_index
-        
+
         if not isinstance(sample_indices, (list, np.ndarray)):
             sample_indices = np.array(sample_indices)
-            
+
         p_indices[element_axis] = slice(0, len(sample_indices))
 
         uarray[tuple(p_indices)] = array[sample_indices, ...]
@@ -44,7 +43,8 @@ class RaggedIndexedSubarray(abstract.CompressedSubarray):
             return uarray
 
         indices = parse_indices(self.shape, indices)
-       
+
         return get_subspace(uarray, indices)
+
 
 # --- End: class

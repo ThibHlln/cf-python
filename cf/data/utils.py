@@ -17,84 +17,78 @@ from ..units import Units
 
 def convert_to_datetime(array, units):
     """
-        Convert a daskarray to 
-    
+        Convert a daskarray to
+
     .. versionadded:: 4.0.0
 
         :Parameters:
-            
+
             array: dask array
-    
+
             units : `Units`
-    
+
         :Returns:
-    
+
             dask array
                 A new dask array containing datetime objects.
 
     """
-    dx = array.map_blocks(
-        partial(rt2dt, units_in=units),
-        dtype=object
-    )
+    dx = array.map_blocks(partial(rt2dt, units_in=units), dtype=object)
     return dx
 
 
 def convert_to_reftime(array, units, first_value=None):
     """Convert a dask array of string or object date-times to floating
     point reference times.
-    
+
     .. versionadded:: 4.0.0
 
         :Parameters:
-            
+
             array: dask array
-    
+
             units : `Units`
-    
+
             first_value : scalar, optional
-    
+
         :Returns:
-    
+
             dask array, `Units`
                 A new dask array containing reference times, and its
                 units.
 
     """
     kind = array.dtype.kind
-    if kind in 'US':
+    if kind in "US":
         # Convert date-time strings to reference time floats
         if not units:
             value = first_value(array, first_value)
             if value is not None:
-                YMD = str(value).partition('T')[0]
+                YMD = str(value).partition("T")[0]
             else:
-                YMD = '1970-01-01'
-                
-            units = Units('days since ' + YMD, units._calendar)
-                
+                YMD = "1970-01-01"
+
+            units = Units("days since " + YMD, units._calendar)
+
         array = array.map_blocks(
-            partial(st2rt, units_in=units, units_out=units),
-            dtype=float
+            partial(st2rt, units_in=units, units_out=units), dtype=float
         )
-                
-    elif kind == 'O':
+
+    elif kind == "O":
         # Convert date-time objects to reference time floats
         value = first_value(array, first_value)
         if value is not None:
             x = value
         else:
-            x = cf_dt(1970, 1, 1, calendar='gregorian')
-                
-        x_since = 'days since ' + '-'.join(
-            map(str, (x.year, x.month, x.day))
-        )
-        x_calendar = getattr(x, 'calendar', 'gregorian')
-        
-        d_calendar = getattr(units, 'calendar', None)
-        d_units = getattr(units, 'units', None)
-        
-        if x_calendar != '':
+            x = cf_dt(1970, 1, 1, calendar="gregorian")
+
+        x_since = "days since " + "-".join(map(str, (x.year, x.month, x.day)))
+        x_calendar = getattr(x, "calendar", "gregorian")
+
+        d_calendar = getattr(units, "calendar", None)
+        d_units = getattr(units, "units", None)
+
+        if x_calendar != "":
             if d_calendar is not None:
                 if not units.equivalent(Units(x_since, x_calendar)):
                     raise ValueError(
@@ -125,8 +119,8 @@ def convert_to_reftime(array, units, first_value=None):
 
         # If the date-times are calendar-agnostic, assign the
         # given calendar, defaulting to Gregorian.
-        if calendars.pop() == '':
-            calendar = getattr(units, 'calendar', 'gregorian')
+        if calendars.pop() == "":
+            calendar = getattr(units, "calendar", "gregorian")
 
             # TODODASK: can map_blocks this, I think
             new_array = da.empty_like(array, dtype=object)
@@ -175,7 +169,7 @@ def first_non_missing_value(array, cached=None):
     """
     if cached is not None:
         return cached
-    
+
     # This does not look particularly efficient, but the expectation
     # is that the first element in the array will not be missing data.
 
@@ -185,9 +179,9 @@ def first_non_missing_value(array, cached=None):
         x = array[index].compute()
         if x is np.ma.masked:
             continue
-        
+
         return x.item()
-    
+
     return None
 
 
@@ -203,29 +197,29 @@ def unique_calendars(array):
             The unique calendars.
 
     """
-    def _get_calendar(x):
-        getattr(x, 'calendar', 'gregorian')
 
-    _calendars = np.vectorize(_get_calendar,
-                              otypes=[np.dtype(str)])
-    
+    def _get_calendar(x):
+        getattr(x, "calendar", "gregorian")
+
+    _calendars = np.vectorize(_get_calendar, otypes=[np.dtype(str)])
+
     array = array.map_blocks(_calendars, dtype=str)
-    
+
     cals = da.unique(array).compute()
     if np.ma.isMA(cals):
         cals = cals.compressed()
-        
+
     # TODODASK - need to allow differetn bu equivalent calendars, such
     # as "gregorian" and 'standard'. Or perhaps this should by the
     # caller?
-        
+
     return set(cals.tolist())
 
 
 def new_axis_identifier(existing_axes=(), basename="dim"):
     """
     Return a new, unique axis identifiers.
-    
+
     The name is arbitrary and has no semantic meaning.
 
     .. versionadded:: 4.0.0
@@ -277,7 +271,7 @@ def new_axis_identifier(existing_axes=(), basename="dim"):
     while axis in existing_axes:
         n += 1
         axis = f"{basename}{n}"
-        
+
     return axis
 
 
@@ -290,15 +284,15 @@ def chunk_positions(chunks):
     .. seealso:: `chunk_shapes`
 
     :Parameters:
-       
+
         chunks: `tuple`
-    
+
     **Examples:**
 
     >>> chunks = ((1, 2), (9,), (44, 55, 66))
     >>> for position in chunk_positions(chunks):
     ...     print(position)
-    ...     
+    ...
     (0, 0, 0)
     (0, 0, 1)
     (0, 0, 2)
@@ -319,15 +313,15 @@ def chunk_shapes(chunks):
     .. seealso:: `chunk_positions`
 
     :Parameters:
-       
+
         chunks: `tuple`
-    
+
     **Examples:**
 
     >>> chunks = ((1, 2), (9,), (4, 5, 6))
     >>> for shape in chunk_shapes(chunks):
     ...     print(shape)
-    ...     
+    ...
     (1, 9, 4)
     (1, 9, 5)
     (1, 9, 6)
@@ -350,9 +344,10 @@ def is_small(array, threshold=None):
     .. versionadded:: 4.0.0
     """
     if threshold is None:
-         threshold = 2**90  # TODODASK - True for now!
+        threshold = 2 ** 90  # TODODASK - True for now!
 
     return array.size * (array.dtype.itemsize + 1) < threshold
+
 
 def is_very_small(array, threshold=None):
     """
@@ -363,7 +358,7 @@ def is_very_small(array, threshold=None):
 
     """
     if threshold is None:
-        threshold = 0.125 * 2**90  # TODODASK - True for now!
+        threshold = 0.125 * 2 ** 90  # TODODASK - True for now!
 
     return is_small(array, threshold)
 
@@ -382,4 +377,3 @@ def dask_compatible(a):
         return a.data._get_data()
     except AttributeError:
         return a
-    

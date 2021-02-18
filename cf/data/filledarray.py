@@ -7,36 +7,35 @@ from ..constants import masked as cf_masked
 
 
 class FilledArray(abstract.Array):
-    '''TODO
+    """TODO"""
 
-    '''
-    def __init__(self, dtype=None, shape=None, size=None,
-                 fill_value=None):
-        '''**Initialization**
+    def __init__(self, dtype=None, shape=None, size=None, fill_value=None):
+        """**Initialization**
 
-    :Parameters:
+        :Parameters:
 
-        dtype : numpy.dtype
-            The numpy data type of the data array.
+            dtype : numpy.dtype
+                The numpy data type of the data array.
 
-        shape : tuple
-            The data array's dimension sizes.
+            shape : tuple
+                The data array's dimension sizes.
 
-        size : int
-            Number of elements in the data array.
+            size : int
+                Number of elements in the data array.
 
-        fill_value : scalar, optional
+            fill_value : scalar, optional
 
-        '''
-        super().__init__(dtype=dtype, shape=shape, size=size,
-                         fill_value=fill_value)
+        """
+        super().__init__(
+            dtype=dtype, shape=shape, size=size, fill_value=fill_value
+        )
 
     def __getitem__(self, indices):
-        '''x.__getitem__(indices) <==> x[indices]
+        """x.__getitem__(indices) <==> x[indices]
 
-    Returns a numpy array.
+        Returns a numpy array.
 
-        '''
+        """
         if indices is Ellipsis:
             array_shape = self.shape
         else:
@@ -60,7 +59,7 @@ class FilledArray(abstract.Array):
                         a, b = divmod(stop - index.start, step)
                         if b:
                             a += 1
-                            
+
                         array_shape.append(a)
                 else:
                     array_shape.append(len(index))
@@ -69,8 +68,9 @@ class FilledArray(abstract.Array):
         if self.fill_value() is cf_masked:
             return np.ma.masked_all(array_shape, dtype=self.dtype)
         elif self.fill_value() is not None:
-            return np.full(array_shape, fill_value=self.fill_value(),
-                           dtype=self.dtype)
+            return np.full(
+                array_shape, fill_value=self.fill_value(), dtype=self.dtype
+            )
         else:
             return np.empty(array_shape, dtype=self.dtype)
 
@@ -79,138 +79,132 @@ class FilledArray(abstract.Array):
     # ----------------------------------------------------------------
     @property
     def dask_lock(self):
-        """TODODASK
-
-        """
+        """TODODASK"""
         return False
-    
+
     @property
     def dtype(self):
-        '''Data-type of the data elements.
+        """Data-type of the data elements.
 
-    **Examples:**
+        **Examples:**
 
-    >>> a.dtype
-    dtype('float64')
-    >>> print(type(a.dtype))
-    <type 'numpy.dtype'>
+        >>> a.dtype
+        dtype('float64')
+        >>> print(type(a.dtype))
+        <type 'numpy.dtype'>
 
-        '''
-        return self._get_component('dtype')
+        """
+        return self._get_component("dtype")
 
     @property
     def ndim(self):
-        '''Number of array dimensions
+        """Number of array dimensions
 
-    **Examples:**
+        **Examples:**
 
-    >>> a.shape
-    (73, 96)
-    >>> a.ndim
-    2
-    >>> a.size
-    7008
+        >>> a.shape
+        (73, 96)
+        >>> a.ndim
+        2
+        >>> a.size
+        7008
 
-    >>> a.shape
-    (1, 1, 1)
-    >>> a.ndim
-    3
-    >>> a.size
-    1
+        >>> a.shape
+        (1, 1, 1)
+        >>> a.ndim
+        3
+        >>> a.size
+        1
 
-    >>> a.shape
-    ()
-    >>> a.ndim
-    0
-    >>> a.size
-    1
-        '''
+        >>> a.shape
+        ()
+        >>> a.ndim
+        0
+        >>> a.size
+        1
+        """
         return len(self.shape)
 
     @property
     def shape(self):
-        '''Tuple of array dimension sizes.
+        """Tuple of array dimension sizes.
 
-    **Examples:**
+        **Examples:**
 
-    >>> a.shape
-    (73, 96)
-    >>> a.ndim
-    2
-    >>> a.size
-    7008
+        >>> a.shape
+        (73, 96)
+        >>> a.ndim
+        2
+        >>> a.size
+        7008
 
-    >>> a.shape
-    (1, 1, 1)
-    >>> a.ndim
-    3
-    >>> a.size
-    1
+        >>> a.shape
+        (1, 1, 1)
+        >>> a.ndim
+        3
+        >>> a.size
+        1
 
-    >>> a.shape
-    ()
-    >>> a.ndim
-    0
-    >>> a.size
-    1
-        '''
-        return self._get_component('shape')
+        >>> a.shape
+        ()
+        >>> a.ndim
+        0
+        >>> a.size
+        1
+        """
+        return self._get_component("shape")
 
     @property
     def size(self):
-        '''Number of elements in the array.
+        """Number of elements in the array.
 
-    **Examples:**
+        **Examples:**
 
-    >>> a.shape
-    (73, 96)
-    >>> a.size
-    7008
-    >>> a.ndim
-    2
+        >>> a.shape
+        (73, 96)
+        >>> a.size
+        7008
+        >>> a.ndim
+        2
 
-    >>> a.shape
-    (1, 1, 1)
-    >>> a.ndim
-    3
-    >>> a.size
-    1
+        >>> a.shape
+        (1, 1, 1)
+        >>> a.ndim
+        3
+        >>> a.size
+        1
 
-    >>> a.shape
-    ()
-    >>> a.ndim
-    0
-    >>> a.size
-    1
+        >>> a.shape
+        ()
+        >>> a.ndim
+        0
+        >>> a.size
+        1
 
-        '''
-        return self._get_component('size')
+        """
+        return self._get_component("size")
 
     def fill_value(self):
-        '''TODO        '''
-        return self._get_component('fill_value')
+        """TODO        """
+        return self._get_component("fill_value")
 
     @property
     def array(self):
-        '''TODO
-        '''
+        """TODO"""
         return self[...]
 
     def reshape(self, newshape):
-        '''TODO
-        '''
+        """TODO"""
         new = self.copy()
         new.shape = newshape
         return new
 
     def resize(self, newshape):
-        '''TODO
-        '''
+        """TODO"""
         self.shape = newshape
 
     def view(self):
-        '''TODO
-        '''
+        """TODO"""
         return self[...]
 
 

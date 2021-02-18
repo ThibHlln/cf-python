@@ -1,26 +1,25 @@
 import abc
 
 from functools import reduce
-from operator  import mul
+from operator import mul
 
 
 class CompressedSubarray(abc.ABC):
-    """TODO
+    """TODO"""
 
-    """
     def __init__(self, array, shape, compression):
-        '''**Initialization**
+        """**Initialization**
 
-    :Parameters:
+        :Parameters:
 
-        array:
+            array:
 
-        shape: `tuple`
-            The shape of the uncompressed array
+            shape: `tuple`
+                The shape of the uncompressed array
 
-        compression: `dict`
+            compression: `dict`
 
-        '''
+        """
         # DO NOT CHANGE IN PLACE
         self.array = array
 
@@ -38,20 +37,18 @@ class CompressedSubarray(abc.ABC):
 
     @abc.abstractmethod
     def __getitem__(self, indices):
-        '''x.__getitem__(indices) <==> x[indices]
+        """x.__getitem__(indices) <==> x[indices]
 
-    Returns a numpy array.
+        Returns a numpy array.
 
-        '''
+        """
         raise NotImplementedError()  # pragma: no cover
 
     def __repr__(self):
-        '''x.__repr__() <==> repr(x)
-
-        '''
+        """x.__repr__() <==> repr(x)"""
         array = self.array
         shape = str(array.shape)
-        shape = shape.replace(',)', ')')
+        shape = shape.replace(",)", ")")
 
         return f"<CF {self.__class__.__name__}{shape}: {array}>"
 
@@ -60,16 +57,12 @@ class CompressedSubarray(abc.ABC):
     # ----------------------------------------------------------------
     @property
     def dask_lock(self):
-        """TODODASK
-
-        """
+        """TODODASK"""
         return self.array.dask_lock
 
     @property
     def dask_asarray(self):
-        """TODODASK
-
-        """
+        """TODODASK"""
         return False
 
     # ----------------------------------------------------------------
@@ -81,67 +74,66 @@ class CompressedSubarray(abc.ABC):
 
     @property
     def file(self):
-        '''The file on disk which contains the compressed array, or `None` of
-    the array is in memory.
+        """The file on disk which contains the compressed array, or `None` of
+         the array is in memory.
 
-   **Examples:**
+        **Examples:**
 
-    >>> self.file
-    '/home/foo/bar.nc'
+         >>> self.file
+         '/home/foo/bar.nc'
 
-        '''
-        return getattr(self.array, 'file', None)
+        """
+        return getattr(self.array, "file", None)
 
     # ----------------------------------------------------------------
     # Methods
     # ----------------------------------------------------------------
     def close(self):
-        '''Close all referenced open files.
+        """Close all referenced open files.
 
-    :Returns:
+        :Returns:
 
-        `None`
+            `None`
 
-    **Examples:**
+        **Examples:**
 
-    >>> f.close()
+        >>> f.close()
 
-        '''
+        """
         if self.on_disk():
             self.array.close()
 
     def copy(self):
-        '''TODO
-
-        '''
+        """TODO"""
         C = self.__class__
         new = C.__new__(C)
         new.__dict__ = self.__dict__.copy()
         return new
 
     def inspect(self):
-        '''Inspect the object for debugging.
+        """Inspect the object for debugging.
 
-    .. seealso:: `cf.inspect`
+        .. seealso:: `cf.inspect`
 
-    :Returns:
+        :Returns:
 
-        `None`
+            `None`
 
-        '''
+        """
         print(cf_inspect(self))
 
     def on_disk(self):
-        '''True if and only if the compressed array is on disk as opposed to
-    in memory.
+        """True if and only if the compressed array is on disk as opposed to
+        in memory.
 
-    **Examples:**
+        **Examples:**
 
-    >>> a.on_disk()
-    True
+        >>> a.on_disk()
+        True
 
-        '''
-        return not hasattr(self.array, '__array_interface__')
+        """
+        return not hasattr(self.array, "__array_interface__")
+
 
 #    def unique(self):
 #        '''TODO
