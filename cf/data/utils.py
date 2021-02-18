@@ -1,7 +1,4 @@
-"""
-General functions useful for `Data` functionality.
-
-"""
+"""General functions useful for `Data` functionality."""
 from functools import partial
 from itertools import product
 
@@ -16,8 +13,7 @@ from ..units import Units
 
 
 def convert_to_datetime(array, units):
-    """
-        Convert a daskarray to
+    """Convert a daskarray to.
 
     .. versionadded:: 4.0.0
 
@@ -141,8 +137,7 @@ def convert_to_reftime(array, units, first_value=None):
 
 
 def first_non_missing_value(array, cached=None):
-    """
-    Return the first non-missing value of an array.
+    """Return the first non-missing value of an array.
 
     If the array contains only missing data then `None` is returned.
 
@@ -186,8 +181,7 @@ def first_non_missing_value(array, cached=None):
 
 
 def unique_calendars(array):
-    """
-    Find the unique calendars from a dask array of date-time objects.
+    """Find the unique calendars from a dask array of date-time objects.
 
     .. versionadded:: 4.0.0
 
@@ -217,8 +211,7 @@ def unique_calendars(array):
 
 
 def new_axis_identifier(existing_axes=(), basename="dim"):
-    """
-    Return a new, unique axis identifiers.
+    """Return a new, unique axis identifiers.
 
     The name is arbitrary and has no semantic meaning.
 
@@ -276,8 +269,7 @@ def new_axis_identifier(existing_axes=(), basename="dim"):
 
 
 def chunk_positions(chunks):
-    """
-    Find the position of each chunk.
+    """Find the position of each chunk.
 
     .. versionadded:: 4.0.0
 
@@ -305,8 +297,7 @@ def chunk_positions(chunks):
 
 
 def chunk_shapes(chunks):
-    """
-    Find the shape of each chunk.
+    """Find the shape of each chunk.
 
     .. versionadded:: 4.0.0
 

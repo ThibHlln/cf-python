@@ -7,7 +7,7 @@ from ..constants import masked as cf_masked
 
 
 class FilledArray(abstract.Array):
-    """TODO"""
+    """TODO."""
 
     def __init__(self, dtype=None, shape=None, size=None, fill_value=None):
         """**Initialization**
@@ -79,7 +79,7 @@ class FilledArray(abstract.Array):
     # ----------------------------------------------------------------
     @property
     def dask_lock(self):
-        """TODODASK"""
+        """TODODASK."""
         return False
 
     @property
@@ -98,7 +98,7 @@ class FilledArray(abstract.Array):
 
     @property
     def ndim(self):
-        """Number of array dimensions
+        """Number of array dimensions.
 
         **Examples:**
 
@@ -122,6 +122,7 @@ class FilledArray(abstract.Array):
         0
         >>> a.size
         1
+
         """
         return len(self.shape)
 
@@ -151,6 +152,7 @@ class FilledArray(abstract.Array):
         0
         >>> a.size
         1
+
         """
         return self._get_component("shape")
 
@@ -185,26 +187,26 @@ class FilledArray(abstract.Array):
         return self._get_component("size")
 
     def fill_value(self):
-        """TODO        """
+        """TODO."""
         return self._get_component("fill_value")
 
     @property
     def array(self):
-        """TODO"""
+        """TODO."""
         return self[...]
 
     def reshape(self, newshape):
-        """TODO"""
+        """TODO."""
         new = self.copy()
         new.shape = newshape
         return new
 
     def resize(self, newshape):
-        """TODO"""
+        """TODO."""
         self.shape = newshape
 
     def view(self):
-        """TODO"""
+        """TODO."""
         return self[...]
 
 

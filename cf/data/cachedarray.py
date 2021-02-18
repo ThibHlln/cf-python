@@ -116,12 +116,12 @@ class CachedArray(abstract.FileArray):
     # ----------------------------------------------------------------
     @property
     def _partition_dir(self):
-        """TODO"""
+        """TODO."""
         return self._get_component("_partition_dir")
 
     @property
     def _partition_file(self):
-        """TODO"""
+        """TODO."""
         return self._get_component("_partition_file")
 
 

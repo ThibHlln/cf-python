@@ -228,19 +228,15 @@ class CellMethod(cfdm.CellMethod):
         return out
 
     def __hash__(self):
-        """
-
-        x.__hash__() <==> hash(x)
-
-        """
+        """x.__hash__() <==> hash(x)"""
         return hash(str(self))
 
     def __eq__(self, y):
-        """x.__eq__(y) <==> x==y"""
+        """x.__eq__(y) <==> x==y."""
         return self.equals(y)
 
     def __ne__(self, other):
-        """x.__ne__(y) <==> x!=y"""
+        """x.__ne__(y) <==> x!=y."""
         return not self.__eq__(other)
 
     @property
@@ -476,7 +472,7 @@ class CellMethod(cfdm.CellMethod):
 
     @property
     def axes(self):
-        """TODO"""
+        """TODO."""
         return self.get_axes(default=AttributeError())
 
     @axes.setter
@@ -500,7 +496,7 @@ class CellMethod(cfdm.CellMethod):
     @_deprecated_kwarg_check("i")
     @_inplace_enabled(default=False)
     def expand_intervals(self, inplace=False, i=False):
-        """TODO"""
+        """TODO."""
         c = _inplace_enabled_define_and_cleanup(self)
         n_axes = len(c.get_axes(()))
         intervals = c.get_qualifier("interval", ())
@@ -512,7 +508,7 @@ class CellMethod(cfdm.CellMethod):
     @_deprecated_kwarg_check("i")
     @_inplace_enabled(default=False)
     def change_axes(self, axis_map, inplace=False, i=False):
-        """TODO
+        """TODO.
 
         :Parameters:
 
@@ -668,7 +664,11 @@ class CellMethod(cfdm.CellMethod):
         )  # pragma: no cover
 
     def remove_axes(self, axes):
-        '''Deprecated at version 3.0.0. Use method 'del_axes' instead."'''
+        """Deprecated at version 3.0.0.
+
+        Use method 'del_axes' instead."
+
+        """
         _DEPRECATION_ERROR_METHOD(
             self, "remove_axes", "Use method 'del_axes' instead."
         )  # pragma: no cover

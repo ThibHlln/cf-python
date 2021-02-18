@@ -1,5 +1,5 @@
 class CompressedArray:
-    """TODODASK"""
+    """TODODASK."""
 
     @property
     def dask_lock(self):

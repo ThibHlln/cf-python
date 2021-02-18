@@ -23,7 +23,7 @@ class Array(cfdm.Array):
 
     @property
     def dask_asarray(self):
-        """TODODASK"""
+        """TODODASK."""
         return False
 
 

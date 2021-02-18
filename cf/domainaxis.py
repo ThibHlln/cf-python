@@ -32,7 +32,7 @@ class DomainAxis(cfdm.DomainAxis):
         return super().__repr__().replace("<", "<CF ", 1)
 
     def __hash__(self):
-        """TODO"""
+        """TODO."""
         return hash(
             (
                 self.__class__.__name__,
@@ -90,35 +90,36 @@ class DomainAxis(cfdm.DomainAxis):
         return self.get_size() <= int(other)
 
     def __add__(self, other):
-        """TODO"""
+        """TODO."""
         new = self.copy()
         new.set_size(self.get_size() + int(other))
         return new
 
     def __radd__(self, other):
-        """TODO"""
+        """TODO."""
         return self + other
 
     def __iadd__(self, other):
-        """TODO"""
+        """TODO."""
         self.set_size(self.get_size() + int(other))
         return self
 
     def __sub__(self, other):
-        """TODO"""
+        """TODO."""
         new = self.copy()
         new.set_size(self.get_size() - int(other))
         return new
 
     def __isub__(self, other):
-        """TODO"""
+        """TODO."""
         self.set_size(self.get_size() - int(other))
         return self
 
     def __int__(self):
-        """TODO
+        """TODO.
 
         x.__int__() <==> int(x)
+
         """
         return self.get_size()
 

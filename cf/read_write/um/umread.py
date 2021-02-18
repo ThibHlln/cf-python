@@ -512,7 +512,7 @@ _axis = {"area": None}
 
 
 class UMField:
-    """TODO"""
+    """TODO."""
 
     def __init__(
         self,
@@ -1126,7 +1126,7 @@ class UMField:
         return "\n".join(out)
 
     def atmosphere_hybrid_height_coordinate(self, axiscode):
-        """TODO
+        """TODO.
 
         **From appendix A of UMDP F3**
 
@@ -1263,7 +1263,7 @@ class UMField:
         return dc
 
     def depth_coordinate(self, axiscode):
-        """TODO
+        """TODO.
 
         :Parameters:
 
@@ -1327,7 +1327,8 @@ class UMField:
         return dc
 
     def atmosphere_hybrid_sigma_pressure_coordinate(self, axiscode):
-        """atmosphere_hybrid_sigma_pressure_coordinate when not an array axis
+        """atmosphere_hybrid_sigma_pressure_coordinate when not an array
+        axis.
 
         46 BULEV Upper layer boundary or BRSVD(1)
 
@@ -1424,7 +1425,7 @@ class UMField:
         return dc
 
     def create_cell_methods(self):
-        """Create the cell methods
+        """Create the cell methods.
 
         :Returns:
 
@@ -1509,7 +1510,7 @@ class UMField:
         return cell_methods
 
     def coord_axis(self, c, axiscode):
-        """TODO"""
+        """TODO."""
         axis = _coord_axis.setdefault(axiscode, None)
         if axis is not None:
             c.axis = axis
@@ -1564,7 +1565,7 @@ class UMField:
         return c
 
     def coord_names(self, coord, axiscode):
-        """TODO
+        """TODO.
 
         :Parameters:
 
@@ -1590,7 +1591,7 @@ class UMField:
         return coord
 
     def coord_positive(self, c, axiscode, domain_axis_key):
-        """TODO
+        """TODO.
 
         :Parameters:
 
@@ -1615,7 +1616,7 @@ class UMField:
         return c
 
     def ctime(self, rec):
-        """TODO"""
+        """TODO."""
         reftime = self.refUnits
         LBVTIME = tuple(self.header_vtime(rec))
         LBDTIME = tuple(self.header_dtime(rec))
@@ -1638,8 +1639,8 @@ class UMField:
         return ctime
 
     def header_vtime(self, rec):
-        """Return the list [LBYR, LBMON, LBDAT, LBHR, LBMIN] for the given
-        record.
+        """Return the list [LBYR, LBMON, LBDAT, LBHR, LBMIN] for the
+        given record.
 
         :Parameters:
 
@@ -1658,8 +1659,8 @@ class UMField:
         return rec.int_hdr[lbyr : lbmin + 1]
 
     def header_dtime(self, rec):
-        """Return the list [LBYRD, LBMOND, LBDATD, LBHRD, LBMIND] for the
-        given record.
+        """Return the list [LBYRD, LBMOND, LBDATD, LBHRD, LBMIND] for
+        the given record.
 
         :Parameters:
 
@@ -1678,8 +1679,8 @@ class UMField:
         return rec.int_hdr[lbyrd : lbmind + 1]
 
     def header_bz(self, rec):
-        """Return the list [BLEV, BRLEV, BHLEV, BHRLEV, BULEV, BHULEV] for the
-        given record.
+        """Return the list [BLEV, BRLEV, BHLEV, BHRLEV, BULEV, BHULEV]
+        for the given record.
 
         :Parameters:
 
@@ -1729,8 +1730,8 @@ class UMField:
         ]
 
     def header_z(self, rec):
-        """Return the list [LBLEV, LBUSER5, BLEV, BRLEV, BHLEV, BHRLEV, BULEV,
-        BHULEV] for the given record.
+        """Return the list [LBLEV, LBUSER5, BLEV, BRLEV, BHLEV, BHRLEV,
+        BULEV, BHULEV] for the given record.
 
         These header items are used by the compare_levels function in
         compare.c
@@ -1941,7 +1942,8 @@ class UMField:
         return data
 
     def decode_lbexp(self):
-        """Decode the integer value of LBEXP in the PP header into a runid.
+        """Decode the integer value of LBEXP in the PP header into a
+        runid.
 
         If this value has already been decoded, then it will be returned
         from the cache, otherwise the value will be decoded and then added
@@ -1995,7 +1997,8 @@ class UMField:
         return runid
 
     def dtime(self, rec):
-        """Return the elapsed time since the data time of the given record.
+        """Return the elapsed time since the data time of the given
+        record.
 
         :Parameters:
 
@@ -2084,7 +2087,7 @@ class UMField:
         return out2
 
     def latitude_longitude_2d_aux_coordinates(self, yc, xc):
-        """TODO
+        """TODO.
 
         :Parameters:
 
@@ -2177,7 +2180,7 @@ class UMField:
             )
 
     def model_level_number_coordinate(self, aux=False):
-        """model_level_number dimension or auxiliary coordinate
+        """model_level_number dimension or auxiliary coordinate.
 
         :Parameters:
 
@@ -2297,7 +2300,7 @@ class UMField:
                 logger.info(header)
 
     def pseudolevel_coordinate(self, LBUSER5):
-        """TODO"""
+        """TODO."""
         if self.nz == 1:
             array = numpy_array((LBUSER5,), dtype=self.int_hdr_dtype)
         else:
@@ -2333,7 +2336,7 @@ class UMField:
         return dc
 
     def radiation_wavelength_coordinate(self, rwl, rwl_units):
-        """TODO"""
+        """TODO."""
         array = numpy_array((rwl,), dtype=float)
         bounds = numpy_array(((0.0, rwl)), dtype=float)
 
@@ -2358,7 +2361,7 @@ class UMField:
         return dc
 
     def reference_time_Units(self):
-        """TODO"""
+        """TODO."""
         LBYR = self.int_hdr[lbyr]
         time_units = "days since {0}-1-1".format(LBYR)
         calendar = self.calendar
@@ -2375,7 +2378,7 @@ class UMField:
         return units
 
     def size_1_height_coordinate(self, axiscode, height, units):
-        """TODO"""
+        """TODO."""
         # Create the height coordinate from the information given in the
         # STASH to standard_name conversion table
 
@@ -2411,8 +2414,8 @@ class UMField:
         return dc
 
     def test_um_condition(self, um_condition, LBCODE, BPLAT, BPLON):
-        """Return `True` if a field satisfies the condition specified for a
-        STASH code to standard name conversion.
+        """Return `True` if a field satisfies the condition specified
+        for a STASH code to standard name conversion.
 
         :Parameters:
 
@@ -2469,8 +2472,8 @@ class UMField:
         return
 
     def test_um_version(self, valid_from, valid_to, um_version):
-        """Return `True` if the UM version applicable to this field is within
-        the given range.
+        """Return `True` if the UM version applicable to this field is
+        within the given range.
 
         If possible, the UM version is derived from the PP header and
         stored in the metadata object. Otherwise it is taken from the
@@ -2512,7 +2515,7 @@ class UMField:
         return False
 
     def time_coordinate(self, axiscode):
-        """Return the T dimension coordinate
+        """Return the T dimension coordinate.
 
         :Parameters:
 
@@ -2568,7 +2571,7 @@ class UMField:
         return dc
 
     def time_coordinate_from_extra_data(self, axiscode, axis):
-        """TODO"""
+        """TODO."""
         extra = self.extra
         array = extra[axis]
         bounds = extra.get(axis + "_bounds", None)
@@ -2594,7 +2597,7 @@ class UMField:
         return dc
 
     def time_coordinate_from_um_timeseries(self, axiscode, axis):
-        """TODO"""
+        """TODO."""
         # This PP/FF field is a timeseries. The validity time is
         # taken to be the time for the first sample, the data time
         # for the last sample, with the others evenly between.
@@ -2660,7 +2663,7 @@ class UMField:
         return time
 
     def dddd(self):
-        """TODO"""
+        """TODO."""
         for axis_code, extra_type in zip((11, 10), ("x", "y")):
             coord_type = extra_type + "_domain_bounds"
 
@@ -2807,8 +2810,8 @@ class UMField:
         return (unrotated_lat, unrotated_lon)
 
     def xy_coordinate(self, axiscode, axis):
-        """Create an X or Y dimension coordinate from header entries or extra
-        data.
+        """Create an X or Y dimension coordinate from header entries or
+        extra data.
 
         :Parameters:
 
@@ -2894,7 +2897,7 @@ class UMField:
 
     @_manage_log_level_via_verbose_attr
     def z_coordinate(self, axiscode):
-        """Create a Z dimension coordinate from BLEV
+        """Create a Z dimension coordinate from BLEV.
 
         :Parameters:
 
@@ -2967,7 +2970,7 @@ class UMField:
 
     @_manage_log_level_via_verbose_attr
     def z_reference_coordinate(self, axiscode):
-        """TODO"""
+        """TODO."""
         logger.info(
             "Creating Z reference coordinates from BRLEV"
         )  # pragma: no cover
@@ -3173,7 +3176,7 @@ stash2standard_name = _stash2standard_name
 
 
 class UMRead(cfdm.read_write.IORead):
-    """TODO"""
+    """TODO."""
 
     @_manage_log_level_via_verbosity
     def read(

@@ -116,7 +116,7 @@ class NetCDFArray(cfdm.NetCDFArray, abstract.FileArray):
 
     @property
     def dask_lock(self):
-        """TODODASK
+        """TODODASK.
 
         Concurrent reads are supported, because __getitem__ opens its
         own independent netCDF4.Dataset instance.
@@ -126,7 +126,7 @@ class NetCDFArray(cfdm.NetCDFArray, abstract.FileArray):
 
     @property
     def file_pointer(self):
-        """TODO"""
+        """TODO."""
         offset = getattr(self, "ncvar", None)
         if offset is None:
             offset = self.varid

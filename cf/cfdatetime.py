@@ -465,7 +465,7 @@ def st2elements(date_string):
 
 
 def rt2dt(array, units_in, units_out=None, dummy1=None):
-    """Convert reference times  to date-time objects
+    """Convert reference times  to date-time objects.
 
     The returned array is always independent.
 
@@ -527,7 +527,7 @@ def rt2dt(array, units_in, units_out=None, dummy1=None):
 
 
 def dt2Dt(x, calendar=None):
-    """Convert a datetime.datetime object to a cf.Datetime object"""
+    """Convert a datetime.datetime object to a cf.Datetime object."""
     if not x:
         return False
     #    return Datetime(*elements(x), calendar=calendar)

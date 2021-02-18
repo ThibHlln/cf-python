@@ -80,9 +80,7 @@ _no_units = Units()
 
 class _HFLCache:
     """A cache for coordinate and cell measure hashes, first and last
-    values and first and last cell bounds.
-
-    """
+    values and first and last cell bounds."""
 
     def __init__(self):
         self.hash = {}
@@ -798,7 +796,8 @@ class _Meta:
         return "\n".join(strings)
 
     def coordinate_values(self):
-        """Create a report listing all coordinate cell values and bounds."""
+        """Create a report listing all coordinate cell values and
+        bounds."""
         string = ["First cell: " + str(self.first_values)]
         string.append("Last cell:  " + str(self.last_values))
         string.append("First bounds: " + str(self.first_bounds))
@@ -807,7 +806,8 @@ class _Meta:
         return "\n".join(string)
 
     def copy(self):
-        """Replace the field associated with a summary class with a deep copy."""
+        """Replace the field associated with a summary class with a deep
+        copy."""
         new = _Meta.__new__(_Meta)
         new.__dict__ = self.__dict__.copy()
         new.field = new.field.copy()
@@ -937,7 +937,8 @@ class _Meta:
         return True
 
     def coord_has_identity_and_data(self, coord, axes=None):
-        """Return a coordinate construct's identity if it has one and has data.
+        """Return a coordinate construct's identity if it has one and
+        has data.
 
         :Parameters:
 
@@ -996,7 +997,8 @@ class _Meta:
         return None
 
     def field_ancillary_has_identity_and_data(self, anc):
-        """Return a field ancillary's identity if it has one and has data.
+        """Return a field ancillary's identity if it has one and has
+        data.
 
         :Parameters:
 
@@ -1039,7 +1041,8 @@ class _Meta:
         return None
 
     def coordinate_reference_signatures(self, refs):
-        """List the structural signatures of given coordinate references.
+        """List the structural signatures of given coordinate
+        references.
 
         :Parameters:
 
@@ -1078,7 +1081,8 @@ class _Meta:
         return signatures
 
     def domain_ancillary_has_identity_and_data(self, anc, identity=None):
-        """Return a domain ancillary's identity if it has one and has data.
+        """Return a domain ancillary's identity if it has one and has
+        data.
 
         :Parameters:
 
@@ -1128,7 +1132,8 @@ class _Meta:
 
     @_manage_log_level_via_verbose_attr
     def print_info(self, signature=True):
-        """Log information on the structural signature and coordinate values.
+        """Log information on the structural signature and coordinate
+        values.
 
         :Parameters:
 
@@ -1151,7 +1156,8 @@ class _Meta:
         logger.debug("COMPLETE AGGREGATION METADATA:\n{}".format(self))
 
     def string_structural_signature(self):
-        """Return a multi-line string giving a field's structual signature.
+        """Return a multi-line string giving a field's structual
+        signature.
 
         :Returns:
 
@@ -1362,7 +1368,8 @@ class _Meta:
         )
 
     def find_coordrefs(self, key):
-        """Return all the coordinate references that point to a coordinate.
+        """Return all the coordinate references that point to a
+        coordinate.
 
         :Parameters:
 
@@ -2565,7 +2572,8 @@ def _get_hfl(
     rtol,
     atol,
 ):
-    """Return the hash value, and optionally first and last values or bounds.
+    """Return the hash value, and optionally first and last values or
+    bounds.
 
     :Parameters:
 
@@ -3006,7 +3014,8 @@ def _ok_coordinate_arrays(meta, axis, overlap, contiguous, verbose=None):
 def _aggregate_2_fields(
     m0, m1, rtol=None, atol=None, verbose=None, concatenate=True, copy=True
 ):
-    """Aggregate two fields, returning the _Meta object of the aggregated field.
+    """Aggregate two fields, returning the _Meta object of the
+    aggregated field.
 
     :Parameters:
 

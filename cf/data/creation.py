@@ -1,7 +1,4 @@
-"""
-Functions used during the creation of `Data` objects.
-
-"""
+"""Functions used during the creation of `Data` objects."""
 from functools import lru_cache
 from uuid import uuid4
 
@@ -86,9 +83,10 @@ def convert_to_builtin_type(x):
 
 
 def to_dask(array, chunks, dask_from_array_options):
-    """TODODASK
+    """TODODASK.
 
     .. versionadded:: 4.0.0
+
     """
     if "chunks" in dask_from_array_options:
         raise TypeError(
@@ -104,7 +102,8 @@ def to_dask(array, chunks, dask_from_array_options):
 
 
 def compressed_to_dask(array):
-    """TODODASK Create and insert a partition matrix for a compressed array.
+    """TODODASK Create and insert a partition matrix for a compressed
+    array.
 
     .. versionadded:: 4.0.0
 
@@ -405,8 +404,7 @@ def compressed_to_dask(array):
 
 @lru_cache(maxsize=32)
 def generate_axis_identifiers(n):
-    """
-    Return new, unique axis identifiers for a given number of axes.
+    """Return new, unique axis identifiers for a given number of axes.
 
     The names are arbitrary and have no semantic meaning.
 
@@ -447,7 +445,8 @@ def threads():
 
 
 def processes():
-    """Return True if the multiprocessing scheduler executes computations.
+    """Return True if the multiprocessing scheduler executes
+    computations.
 
     See https://docs.dask.org/en/latest/scheduling.html for details.
 
@@ -459,8 +458,8 @@ def processes():
 
 def synchronous():
     """Return True if the single-threaded synchronous scheduler executes
-    computations computations in the local thread with no parallelism
-    at all.
+    computations computations in the local thread with no parallelism at
+    all.
 
     See https://docs.dask.org/en/latest/scheduling.html for details.
 
@@ -471,7 +470,7 @@ def synchronous():
 
 
 def get_lock():
-    """TODODASK
+    """TODODASK.
 
     See https://docs.dask.org/en/latest/scheduling.html for details.
 

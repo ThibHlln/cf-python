@@ -35,7 +35,7 @@ from ..functions import broadcast_array
 
 
 def asanyarray(*args):
-    """TODO
+    """TODO.
 
     :Parameters:
 
@@ -104,7 +104,7 @@ def psum(x, y):
 
 
 def pmax(x, y):
-    """TODO
+    """TODO.
 
     :Parameters:
 
@@ -152,7 +152,7 @@ def pmax(x, y):
 
 
 def pmin(x, y):
-    """TODO
+    """TODO.
 
     :Parameters:
 
@@ -255,8 +255,8 @@ def double_precision(a):
 # Maximum
 # --------------------------------------------------------------------
 def max_f(a, axis=None, masked=False):
-    """Return the maximum of an array, or the maxima of an array along an
-    axis.
+    """Return the maximum of an array, or the maxima of an array along
+    an axis.
 
     :Parameters:
 
@@ -287,7 +287,7 @@ def max_f(a, axis=None, masked=False):
 
 
 def max_fpartial(out, out1=None, group=False):
-    """TODO"""
+    """TODO."""
     N, amax = out
 
     if out1 is not None:
@@ -299,7 +299,7 @@ def max_fpartial(out, out1=None, group=False):
 
 
 def max_ffinalise(out, sub_samples=None):
-    """TODO
+    """TODO.
 
     :Parameters:
 
@@ -314,8 +314,8 @@ def max_ffinalise(out, sub_samples=None):
 # Minimum
 # --------------------------------------------------------------------
 def min_f(a, axis=None, masked=False):
-    """Return the minimum of an array, or the minima of an array along an
-    axis.
+    """Return the minimum of an array, or the minima of an array along
+    an axis.
 
     :Parameters:
 
@@ -341,7 +341,7 @@ def min_f(a, axis=None, masked=False):
 
 
 def min_fpartial(out, out1=None, group=False):
-    """TODO"""
+    """TODO."""
     N, amin = out
 
     if out1 is not None:
@@ -353,7 +353,7 @@ def min_fpartial(out, out1=None, group=False):
 
 
 def min_ffinalise(out, sub_samples=None):
-    """TODO
+    """TODO.
 
     :Parameters:
 
@@ -542,8 +542,8 @@ def mean_ffinalise(out, sub_samples=None):
 # mean_absolute_value
 # --------------------------------------------------------------------
 def mean_abs_f(a, axis=None, weights=None, masked=False):
-    """Return the mean of the absolute array, or the means of the absolute
-    array along an axis.
+    """Return the mean of the absolute array, or the means of the
+    absolute array along an axis.
 
     :Parameters:
 
@@ -632,8 +632,8 @@ def root_mean_square_ffinalise(out, sub_samples=None):
 # Mid range: Average of maximum and minimum
 # --------------------------------------------------------------------
 def mid_range_f(a, axis=None, masked=False):
-    """Return the minimum and maximum of an array or the minima and maxima
-    along an axis.
+    """Return the minimum and maximum of an array or the minima and
+    maxima along an axis.
 
     ``mid_range_f(a, axis=axis)`` is equivalent to ``(numpy.amin(a,
     axis=axis), numpy.amax(a, axis=axis))``
@@ -669,7 +669,7 @@ def mid_range_f(a, axis=None, masked=False):
 
 
 def mid_range_fpartial(out, out1=None, group=False):
-    """TODO"""
+    """TODO."""
     N, amin, amax = out
 
     if out1 is not None:
@@ -683,7 +683,7 @@ def mid_range_fpartial(out, out1=None, group=False):
 
 
 def mid_range_ffinalise(out, sub_samples=None):
-    """TODO
+    """TODO.
 
     :Parameters:
 
@@ -719,7 +719,7 @@ range_fpartial = mid_range_fpartial
 
 
 def range_ffinalise(out, sub_samples=None):
-    """Absolute difference between maximum and minimum
+    """Absolute difference between maximum and minimum.
 
     :Parameters:
 
@@ -741,13 +741,12 @@ def range_ffinalise(out, sub_samples=None):
 # Sample size
 # ---------------------------------------------------------------------
 def sample_size_f(a, axis=None, masked=False):
-    """TODO
+    """TODO.
 
     :Parameters:
 
         axis: `int`, optional
             non-negative
-
 
     """
     if masked:
@@ -767,7 +766,7 @@ def sample_size_f(a, axis=None, masked=False):
 
 
 def sample_size_fpartial(out, out1=None, group=False):
-    """TODO
+    """TODO.
 
     :Parameters:
 
@@ -787,7 +786,7 @@ def sample_size_fpartial(out, out1=None, group=False):
 
 
 def sample_size_ffinalise(out, sub_samples=None):
-    """TODO
+    """TODO.
 
     :Parameters:
 
@@ -855,7 +854,7 @@ def sum_f(a, axis=None, weights=None, masked=False):
 
 
 def sum_fpartial(out, out1=None, group=False):
-    """TODO"""
+    """TODO."""
     N, asum = out
 
     if out1 is not None:
@@ -867,12 +866,13 @@ def sum_fpartial(out, out1=None, group=False):
 
 
 def sum_ffinalise(out, sub_samples=None):
-    """TODO
+    """TODO.
 
     :Parameters:
 
         sub_samples: *optional*
             Ignored.
+
     """
     return mask_where_too_few_values(1, *out)
 
@@ -913,7 +913,7 @@ sum_of_squares_ffinalise = sum_ffinalise
 def sw_f(
     a, axis=None, masked=False, weights=None, N=None, sum_of_squares=False
 ):
-    """TODO"""
+    """TODO."""
     if N is None:
         (N,) = sample_size_f(a, axis=axis, masked=masked)
 
@@ -1117,7 +1117,8 @@ def var_fpartial(out, out1=None, group=False):
 
 
 def var_ffinalise(out, sub_samples=None):
-    """https://en.wikipedia.org/wiki/Pooled_variance#Population-based_statistics"""
+    """https://en.wikipedia.org/wiki/Pooled_variance#Population-
+    based_statistics."""
     (N, var, avg, V1, V2, ddof, weighted) = out
 
     N, var = mask_where_too_few_values(max(2, ddof + 1), N, var)
@@ -1192,7 +1193,7 @@ sd_fpartial = var_fpartial
 
 
 def sd_ffinalise(out, sub_samples=None):
-    """TODO
+    """TODO.
 
     :Parameters:
 
@@ -1201,7 +1202,6 @@ def sd_ffinalise(out, sub_samples=None):
 
         sub_samples: *optional*
             Ignored.
-
 
     """
     N, sd = var_ffinalise(out, sub_samples)

@@ -21,9 +21,7 @@ _empty_matrix = numpy_empty((), dtype=object)
 
 
 class PartitionMatrix:
-    """
-
-    A hyperrectangular partition matrix of a master data array.
+    """A hyperrectangular partition matrix of a master data array.
 
     Each of elements (called partitions) span all or part of exactly one
     sub-array of the master data array.
@@ -45,6 +43,7 @@ class PartitionMatrix:
     `!shape`    List of the partition matrix's dimension sizes.
     `!size`     The number of partitions in the partition matrix.
     ==========  ===========================================================
+
     """
 
     def __init__(self, matrix, axes):
@@ -130,7 +129,7 @@ class PartitionMatrix:
         return "<CF %s: %s>" % (self.__class__.__name__, self.shape)
 
     def __setitem__(self, indices, value):
-        """x.__setitem__(indices, y) <==> x[indices]=y
+        """x.__setitem__(indices, y) <==> x[indices]=y.
 
         Indices must be an integer, a slice object or a tuple. If a slice
         object is given then the value being assigned must be an
@@ -318,7 +317,7 @@ class PartitionMatrix:
             master_axis_to_position,
             master_flip,
         ):
-            """TODO
+            """TODO.
 
             :Parameters:
 
@@ -553,7 +552,8 @@ class PartitionMatrix:
         return p
 
     def ndenumerate(self):
-        """Return an iterator yielding pairs of array indices and values.
+        """Return an iterator yielding pairs of array indices and
+        values.
 
         :Returns:
 
@@ -657,8 +657,8 @@ class PartitionMatrix:
 
     # 0
     def set_location_map(self, data_axes, ns=None):
-        """Set the `!location` attribute of each partition of the partition
-        matrix in place.
+        """Set the `!location` attribute of each partition of the
+        partition matrix in place.
 
         :Parameters:
 
@@ -778,7 +778,8 @@ class PartitionMatrix:
 
     @_inplace_enabled(default=False)
     def transpose(self, axes, inplace=False):
-        """Permute the partition dimensions of the partition matrix in place.
+        """Permute the partition dimensions of the partition matrix in
+        place.
 
         Note that this does not change the master data array.
 

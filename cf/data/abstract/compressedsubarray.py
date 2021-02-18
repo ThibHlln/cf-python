@@ -5,7 +5,7 @@ from operator import mul
 
 
 class CompressedSubarray(abc.ABC):
-    """TODO"""
+    """TODO."""
 
     def __init__(self, array, shape, compression):
         """**Initialization**
@@ -57,12 +57,12 @@ class CompressedSubarray(abc.ABC):
     # ----------------------------------------------------------------
     @property
     def dask_lock(self):
-        """TODODASK"""
+        """TODODASK."""
         return self.array.dask_lock
 
     @property
     def dask_asarray(self):
-        """TODODASK"""
+        """TODODASK."""
         return False
 
     # ----------------------------------------------------------------
@@ -74,8 +74,8 @@ class CompressedSubarray(abc.ABC):
 
     @property
     def file(self):
-        """The file on disk which contains the compressed array, or `None` of
-         the array is in memory.
+        """The file on disk which contains the compressed array, or
+        `None` of the array is in memory.
 
         **Examples:**
 
@@ -104,7 +104,7 @@ class CompressedSubarray(abc.ABC):
             self.array.close()
 
     def copy(self):
-        """TODO"""
+        """TODO."""
         C = self.__class__
         new = C.__new__(C)
         new.__dict__ = self.__dict__.copy()
@@ -123,8 +123,8 @@ class CompressedSubarray(abc.ABC):
         print(cf_inspect(self))
 
     def on_disk(self):
-        """True if and only if the compressed array is on disk as opposed to
-        in memory.
+        """True if and only if the compressed array is on disk as
+        opposed to in memory.
 
         **Examples:**
 

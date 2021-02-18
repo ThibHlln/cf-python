@@ -188,42 +188,42 @@ class UMArray(abstract.FileArray):
 
     @property
     def dask_lock(self):
-        """TODO"""
+        """TODO."""
         return False
 
     @property
     def file_pointer(self):
-        """TODO"""
+        """TODO."""
         return (self.filename, self.header_offset)
 
     @property
     def header_offset(self):
-        """TODO"""
+        """TODO."""
         return self._get_component("header_offset")
 
     @property
     def data_offset(self):
-        """TODO"""
+        """TODO."""
         return self._get_component("data_offset")
 
     @property
     def disk_length(self):
-        """TODO"""
+        """TODO."""
         return self._get_component("disk_length")
 
     @property
     def fmt(self):
-        """TODO"""
+        """TODO."""
         return self._get_component("fmt")
 
     @property
     def byte_ordering(self):
-        """TODO"""
+        """TODO."""
         return self._get_component("byte_ordering")
 
     @property
     def word_size(self):
-        """TODO"""
+        """TODO."""
         return self._get_component("word_size")
 
     def close(self):

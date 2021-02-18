@@ -46,7 +46,7 @@ class Constructs(cfdm.Constructs):
         return super().__repr__().replace("<", "<CF ", 1)
 
     def _matching_values(self, value0, construct, value1):
-        """TODO"""
+        """TODO."""
         if isinstance(value0, Query):
             return value0.evaluate(value1)
 

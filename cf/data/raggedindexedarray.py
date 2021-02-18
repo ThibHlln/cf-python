@@ -2,8 +2,7 @@ import cfdm
 
 
 class RaggedIndexedArray(cfdm.RaggedIndexedArray):
-    """
-    An underlying indexed ragged array.
+    """An underlying indexed ragged array.
 
     A collection of features stored using an indexed ragged array
     combines all features along a single dimension (the "sample

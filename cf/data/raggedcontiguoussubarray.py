@@ -6,7 +6,7 @@ from . import abstract
 
 
 class RaggedContiguousSubarray(abstract.CompressedSubarray):
-    """TODO"""
+    """TODO."""
 
     def __getitem__(self, indices):
         """x.__getitem__(indices) <==> x[indices]
