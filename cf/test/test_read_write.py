@@ -1,13 +1,16 @@
-import datetime
-import tempfile
-import os
-import unittest
 import atexit
+import datetime
+import faulthandler
 import inspect
+import os
 import shutil
 import subprocess
+import tempfile
+import unittest
 
 import numpy
+
+faulthandler.enable()  # to debug seg faults and timeouts
 
 import cf
 
@@ -193,18 +196,18 @@ class read_writeTest(unittest.TestCase):
             return
 
         # select on field list
-        f = cf.read(self.filename, squeeze=True)
-        f = cf.read(self.filename, unsqueeze=True)
+        cf.read(self.filename, squeeze=True)
+        cf.read(self.filename, unsqueeze=True)
         with self.assertRaises(Exception):
-            f = cf.read(self.filename, unsqueeze=True, squeeze=True)
+            cf.read(self.filename, unsqueeze=True, squeeze=True)
 
     def test_read_aggregate(self):
         if self.test_only and inspect.stack()[0][3] not in self.test_only:
             return
 
-        f = cf.read(self.filename, aggregate=True)
-        f = cf.read(self.filename, aggregate=False)
-        f = cf.read(self.filename, aggregate={})
+        cf.read(self.filename, aggregate=True)
+        cf.read(self.filename, aggregate=False)
+        cf.read(self.filename, aggregate={})
 
     def test_read_extra(self):
         if self.test_only and inspect.stack()[0][3] not in self.test_only:
@@ -364,7 +367,7 @@ class read_writeTest(unittest.TestCase):
         )
 
         for single in (True, False):
-            for dousble in (True, False):
+            for double in (True, False):
                 with self.assertRaises(Exception):
                     _ = cf.write(g, double=double, single=single)
         # --- End: for
@@ -475,7 +478,7 @@ class read_writeTest(unittest.TestCase):
 
         f0 = cf.read(self.filename)[0]
         f = cf.read(tmpfile)[0]
-        h = cf.read(tmpfileh)[0]
+        _ = cf.read(tmpfileh)[0]
         c = cf.read(tmpfilec)[0]
 
         self.assertTrue(f0.equals(f, verbose=2))

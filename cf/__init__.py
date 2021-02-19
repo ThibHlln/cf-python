@@ -180,7 +180,7 @@ if LooseVersion(netCDF4.__version__) < LooseVersion(_minimum_vn):
     )
 
 # Check the version of cftime
-_minimum_vn = "1.3.0"
+_minimum_vn = "1.4.0"
 if LooseVersion(cftime.__version__) < LooseVersion(_minimum_vn):
     raise RuntimeError(
         "Bad cftime version: cf requires cftime>={}. "
@@ -204,8 +204,8 @@ if LooseVersion(cfunits.__version__) < LooseVersion(_minimum_vn):
     )
 
 # Check the version of cfdm
-_minimum_vn = "1.8.8.0"
-_maximum_vn = "1.8.9.0"
+_minimum_vn = "1.8.9.0"
+_maximum_vn = "1.8.10.0"
 _cfdm_version = LooseVersion(cfdm.__version__)
 if not LooseVersion(_minimum_vn) <= _cfdm_version < LooseVersion(_maximum_vn):
     raise RuntimeError(
@@ -295,8 +295,8 @@ from .query import (
     son,
     seasons,
 )
-from .constants import *
-from .functions import *
+from .constants import *  # noqa: F403
+from .functions import *  # noqa: F403
 from .maths import relative_vorticity, histogram
 from .examplefield import example_field
 

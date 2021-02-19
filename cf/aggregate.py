@@ -17,7 +17,6 @@ from .decorators import (
     _manage_log_level_via_verbosity,
     _manage_log_level_via_verbose_attr,
     _reset_log_emergence_level,
-    _deprecated_kwarg_check,
 )
 
 from .functions import (
@@ -264,9 +263,6 @@ class _Meta:
             self.message = "no data array"
             return
 
-        constructs = f.constructs
-        construct = f.construct
-
         # ------------------------------------------------------------
         # Promote selected properties to 1-d, size 1 auxiliary
         # coordinates
@@ -442,7 +438,7 @@ class _Meta:
                 if identity is None:
                     self.message = (
                         "axis {0!r} has no netCDF dimension name".format(
-                            f.axis_name(axis)
+                            f.constructs.domain_axis_identity(axis)
                         )
                     )  # TODO
                     return

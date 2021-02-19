@@ -1,7 +1,10 @@
 import datetime
+import faulthandler
 import os
 from random import choice, shuffle
 import unittest
+
+faulthandler.enable()  # to debug seg faults and timeouts
 
 import cf
 

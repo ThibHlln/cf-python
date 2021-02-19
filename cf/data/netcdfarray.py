@@ -126,7 +126,8 @@ class NetCDFArray(cfdm.NetCDFArray, abstract.FileArray):
 
     @property
     def file_pointer(self):
-        """TODO."""
+        """The file pointer starting at the position of the netCDF
+        variable."""
         offset = getattr(self, "ncvar", None)
         if offset is None:
             offset = self.varid

@@ -2,10 +2,13 @@ import abc
 
 from functools import reduce
 from operator import mul
+from sys import getrefcount
+
+from ...functions import inspect as cf_inspect
 
 
 class CompressedSubarray(abc.ABC):
-    """TODO."""
+    """Abstract base class for a compressed sub-array container."""
 
     def __init__(self, array, shape, compression):
         """**Initialization**
@@ -104,7 +107,7 @@ class CompressedSubarray(abc.ABC):
             self.array.close()
 
     def copy(self):
-        """TODO."""
+        """Replace the abstract base class with a deep copy."""
         C = self.__class__
         new = C.__new__(C)
         new.__dict__ = self.__dict__.copy()
@@ -136,9 +139,12 @@ class CompressedSubarray(abc.ABC):
 
 
 #    def unique(self):
-#        '''TODO
-#
-#        '''
+#         """True if there is only one permanent reference to the array
+#         instance."""
+#         # Note, from the Python docs for sys.getrefcount:
+#         # "The count returned is generally one higher than you might expect,
+#         # because it includes the (temporary) reference as an argument to
+#         # getrefcount", hence <= 2 to test for uniqueness rather than <= 1.
 #        return getrefcount(self.array) <= 2
 
 

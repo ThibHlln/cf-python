@@ -7,7 +7,12 @@ from ..units import Units
 
 from ..data import Data
 
-from ..functions import _DEPRECATION_ERROR_METHOD, _DEPRECATION_ERROR
+from ..functions import (
+    _DEPRECATION_ERROR_DICT,
+    _DEPRECATION_ERROR_KWARGS,
+    _DEPRECATION_ERROR_METHOD,
+    _DEPRECATION_ERROR,
+)
 
 from ..mixin_container import Container
 
@@ -63,7 +68,7 @@ class Properties(Container):
         """Whether two values match.
 
         The definition of "match" depends on the types of *value0* and
-        *value1*. See the code for the details.
+        *value1*.
 
         :Parameters:
 
@@ -74,6 +79,9 @@ class Properties(Container):
                 The second value to be matched.
 
             units: `bool`, optional
+                If True then the units must be the same for values to be
+                considered to match. By default, units are ignored in the
+                comparison.
 
         :Returns:
 

@@ -70,7 +70,58 @@ from .abstract import Array
 from .filledarray import FilledArray
 from .partition import Partition
 from .partitionmatrix import PartitionMatrix
-from .collapse_functions import *
+
+# TODO SB post-186: decide how best to import these whilst avoiding 'import *'
+from .collapse_functions import (
+    max_f,
+    max_fpartial,
+    max_ffinalise,
+    min_f,
+    min_fpartial,
+    min_ffinalise,
+    max_abs_f,
+    max_abs_fpartial,
+    max_abs_ffinalise,
+    min_abs_f,
+    min_abs_fpartial,
+    min_abs_ffinalise,
+    mean_f,
+    mean_fpartial,
+    mean_ffinalise,
+    mean_abs_f,
+    mean_abs_fpartial,
+    mean_abs_ffinalise,
+    root_mean_square_f,
+    root_mean_square_fpartial,
+    root_mean_square_ffinalise,
+    mid_range_f,
+    mid_range_fpartial,
+    mid_range_ffinalise,
+    range_f,
+    range_fpartial,
+    range_ffinalise,
+    sample_size_f,
+    sample_size_fpartial,
+    sample_size_ffinalise,
+    sum_f,
+    sum_fpartial,
+    sum_ffinalise,
+    sum_of_squares_f,
+    sum_of_squares_fpartial,
+    sum_of_squares_ffinalise,
+    sw_f,
+    sw_fpartial,
+    sw_ffinalise,
+    sw2_f,
+    sw2_fpartial,
+    sw2_ffinalise,
+    var_f,
+    var_fpartial,
+    var_ffinalise,
+    sd_f,
+    sd_fpartial,
+    sd_ffinalise,
+)
 
 from . import (
     NetCDFArray,
@@ -638,7 +689,7 @@ class Data(Container, cfdm.Data):
 
         :Parameters:
 
-            array: TODO
+            array:
 
         :Returns:
 
@@ -1921,7 +1972,10 @@ class Data(Container, cfdm.Data):
 
         if bin_units:
             if not bin_units.equivalent(org_units):
-                raise ValueError("non-equiv units TODO")
+                raise ValueError(
+                    "Can't put data into bins that have units that are "
+                    "not equivalent to the units of the data."
+                )
 
             if not bin_units.equals(org_units):
                 bins = bins.copy()
@@ -2078,7 +2132,7 @@ class Data(Container, cfdm.Data):
         inplace=False,
         _preserve_partitions=False,
     ):
-        """TODO."""
+        """Compute the median of the values."""
 
         return self.percentile(
             50,
@@ -2100,7 +2154,12 @@ class Data(Container, cfdm.Data):
         inplace=False,
         _preserve_partitions=False,
     ):
-        """TODO."""
+        """Compute the mean the of upper decile.
+
+        Specifically, calculate the mean of the upper group of data
+        values defined by the upper tenth of their distribution.
+
+        """
         d = _inplace_enabled_define_and_cleanup(self)
 
         p90 = d.percentile(
@@ -2405,7 +2464,25 @@ class Data(Container, cfdm.Data):
         return d
 
     def loads(self, j, chunk=True):
-        """TODO."""
+        """Reset the data in place from a string serialization.
+
+        .. seealso:: `dumpd`, `loadd`
+
+        :Parameters:
+
+            j: `str`
+                A JSON document string serialization of a `cf.Data` object.
+
+            chunk: `bool`, optional
+                If True (the default) then the reset data array will be
+                re-partitioned according the current chunk size, as defined
+                by the `cf.chunksize` function.
+
+        :Returns:
+
+            `None`
+
+        """
         d = json_loads(j)
 
         # Convert _cyclic to a set
@@ -2640,8 +2717,8 @@ class Data(Container, cfdm.Data):
 
             chunk: `bool`, optional
                 If True (the default) then the reset data array will be
-                re-partitions according the current chunk size, as defined
-                by the `cf.chunksize` function.
+                re-partitioned according the current chunk size, as
+                defined by the `cf.chunksize` function.
 
         :Returns:
 
@@ -3693,7 +3770,6 @@ class Data(Container, cfdm.Data):
         :Returns:
 
             `Data` or `None`
-                TODO
 
         **Examples:**
 
@@ -3731,7 +3807,8 @@ class Data(Container, cfdm.Data):
         return d
 
     def _isdatetime(self):
-        """TODO."""
+        """True if the internal representation is a datetime-like
+        object."""
         return self.dtype.kind == "O" and self.Units.isreftime
 
     @_inplace_enabled(default=False)
@@ -3796,14 +3873,13 @@ class Data(Container, cfdm.Data):
         return d
 
     def _combined_units(self, data1, method, inplace):
-        """TODO.
+        """Combines by given method the data's units with other units.
 
         :Parameters:
 
             data1: `Data`
 
             method: `str`
-                The TODO
 
             {{inplace: `bool`, optional}}
 
@@ -4064,7 +4140,11 @@ class Data(Container, cfdm.Data):
                 else:
                     # units1 is defined and is not dimensionless
                     if data0._size > 1:
-                        raise ValueError("kkkkkkkkkjjjjjjjjjjjjjjjj")
+                        raise ValueError(
+                            "Can only raise units to the power of a single "
+                            "value at a time. Asking to raise to the power of "
+                            "{}".format(data0)
+                        )
 
                     if not units0:
                         # Check that the units are not shifted, as
@@ -4137,7 +4217,9 @@ class Data(Container, cfdm.Data):
                     # units0 is defined and is not dimensionless
                     if data1._size > 1:
                         raise ValueError(
-                            "kkkkkkkkkjjjjjjjjjjjjjjjj 8888888888888888"
+                            "Can only raise units to the power of a single "
+                            "value at a time. Asking to raise to the power of "
+                            "{}".format(data1)
                         )
 
                     if not units1:
@@ -4648,7 +4730,7 @@ class Data(Container, cfdm.Data):
             return self
 
     def __query_set__(self, values):
-        """TODO."""
+        """Implements the “member of set” condition."""
         i = iter(values)
         v = next(i)
 
@@ -4659,11 +4741,11 @@ class Data(Container, cfdm.Data):
         return out
 
     def __query_wi__(self, value):
-        """TODO."""
+        """Implements the “within a range” condition."""
         return (self >= value[0]) & (self <= value[1])
 
     def __query_wo__(self, value):
-        """TODO."""
+        """Implements the “without a range” condition."""
         return (self < value[0]) | (self > value[1])
 
     @classmethod
@@ -5023,7 +5105,7 @@ class Data(Container, cfdm.Data):
         return data0
 
     def _move_flip_to_partitions(self):
-        """TODO.
+        """Reverses an axis in the sub-array of each partition.
 
         .. note:: This does not change the master array.
 
@@ -5663,7 +5745,7 @@ class Data(Container, cfdm.Data):
 
             fpartial: function
 
-            ffinalize: function
+            ffinalise: function
 
             axes: (sequence of) `int`, optional
                 The axes to be collapsed. By default flattened input is
@@ -6414,7 +6496,7 @@ class Data(Container, cfdm.Data):
         data,
         n_non_collapse_axes,
     ):
-        """TODO."""
+        """Finalise a collapse over a data array."""
         if out is not None:
             # Finalise
             N, out = ffinalise(out, sub_samples)
@@ -6429,7 +6511,7 @@ class Data(Container, cfdm.Data):
 
     @staticmethod
     def _collapse_mask(array, masked, N, Nmax, mtol):
-        """TODO.
+        """Re-masks a masked array to reflect a collapse.
 
         :Parameters:
 
@@ -6466,7 +6548,7 @@ class Data(Container, cfdm.Data):
         n_non_collapse_axes,
         n_collapse_axes,
     ):
-        """TODO.
+        """Collapse weights of an array.
 
         :Parameters:
 
@@ -6584,7 +6666,12 @@ class Data(Container, cfdm.Data):
 
             if masked and numpy_ma_isMA(array):
                 if not (array.mask | weights_out.mask == array.mask).all():
-                    raise ValueError("weights mask is duff")
+                    raise ValueError(
+                        "The output weights mask {} is not compatible with "
+                        "the array mask {}.".format(
+                            weights_out.mask, array.mask
+                        )
+                    )
         # --- End: if
 
         return weights_out
@@ -7553,7 +7640,6 @@ class Data(Container, cfdm.Data):
         :Returns:
 
             `Data`
-                TODO
 
         **Examples:**
 
@@ -7926,8 +8012,6 @@ class Data(Container, cfdm.Data):
     #        `Data`
     #
     #    **Examples:**
-    #
-    #    TODO
     #
     #        '''
     #        return cls(numpy_arctan2(y, x), units=_units_radians)
@@ -8764,9 +8848,13 @@ class Data(Container, cfdm.Data):
         return out
 
     def get_data(self, default=ValueError()):
-        """TODO.
+        """Returns the data.
 
         .. versionadded:: 3.0.0
+
+        :Returns:
+
+                `Data`
 
         """
         return self
@@ -8780,7 +8868,7 @@ class Data(Container, cfdm.Data):
 
             default: optional
                 Return the value of the *default* parameter if the units
-                has not been set. If set to an `Exception` instance then
+                have not been set. If set to an `Exception` instance then
                 it will be raised instead.
 
         :Returns:
@@ -8993,10 +9081,8 @@ class Data(Container, cfdm.Data):
         :Parameters:
 
             axes : (sequence of) int, optional
-                TODO
 
             squeeze : bool, optional
-                TODO
 
             {{inplace: `bool`, optional}}
 
@@ -9095,10 +9181,8 @@ class Data(Container, cfdm.Data):
         :Parameters:
 
             axes : (sequence of) int, optional
-                TODO
 
             squeeze : bool, optional
-                TODO
 
             {{inplace: `bool`, optional}}
 
@@ -9473,7 +9557,7 @@ class Data(Container, cfdm.Data):
         i=False,
         _preserve_partitions=False,
     ):
-        """TODO.
+        """Collapses axes with their sample size.
 
         :Parameters:
 
@@ -9626,7 +9710,7 @@ class Data(Container, cfdm.Data):
            dtype: data-type, optional
                 By default, the data-type is inferred from the input data.
 
-           copy: TODO
+           copy:
 
         :Returns:
 
@@ -9932,24 +10016,19 @@ class Data(Container, cfdm.Data):
         return self._size - self.count()
 
     def cyclic(self, axes=None, iscyclic=True):
-        """TODO.
+        """Returns or sets the axes of the data array which are cyclic.
 
         :Parameters:
 
             axes: (sequence of) `int`, optional
-                TODO
 
             iscyclic: `bool`
-                TODO
 
         :Returns:
 
             `set`
-                TODO
 
         **Examples:**
-
-            TODO
 
         """
         cyclic_axes = self._cyclic
@@ -9979,7 +10058,7 @@ class Data(Container, cfdm.Data):
         return old
 
     def _YMDhms(self, attr):
-        """TODO.
+        """Provides datetime components of the data array elements.
 
         .. seealso:: `~cf.Data.year`, ~cf.Data.month`, `~cf.Data.day`,
         `~cf.Data.hour`, `~cf.Data.minute`, `~cf.Data.second`
@@ -10467,8 +10546,6 @@ class Data(Container, cfdm.Data):
 
         **Examples:**
 
-        TODO
-
         """
         d = _inplace_enabled_define_and_cleanup(self)
 
@@ -10490,29 +10567,27 @@ class Data(Container, cfdm.Data):
     def insert_dimension(self, position=0, inplace=False):
         """Expand the shape of the data array in place.
 
-            Insert a new size 1 axis, corresponding to a given position in the
-            data array shape.
+        Insert a new size 1 axis, corresponding to a given position in the
+        data array shape.
 
         # TODODASK bring back expand_dime alias (or rather alias this to that)
 
-            .. seealso:: `flip`, `squeeze`, `swapaxes`, `transpose`
+        .. seealso:: `flip`, `squeeze`, `swapaxes`, `transpose`
 
-            :Parameters:
+        :Parameters:
 
-                position: `int`, optional
-                    Specify the position that the new axis will have in the data
-                    array axes. By default the new axis has position 0, the
-                    slowest varying position.
+            position: `int`, optional
+                Specify the position that the new axis will have in the data
+                array axes. By default the new axis has position 0, the
+                slowest varying position.
 
-                {{inplace: `bool`, optional}}
+            {{inplace: `bool`, optional}}
 
-            :Returns:
+        :Returns:
 
-                `Data` or `None`
+            `Data` or `None`
 
-            **Examples:**
-
-            TODO
+        **Examples:**
 
         """
         d = _inplace_enabled_define_and_cleanup(self)
@@ -11620,8 +11695,6 @@ class Data(Container, cfdm.Data):
 
         **Examples:**
 
-        TODO
-
         """
         d = _inplace_enabled_define_and_cleanup(self)
         d._Units = Units(d.Units._units, calendar)
@@ -11704,7 +11777,7 @@ class Data(Container, cfdm.Data):
 
     @property
     def in_memory(self):
-        """TODO.
+        """True if the array is retained in memory.
 
         :Returns:
 
@@ -12002,7 +12075,7 @@ class Data(Container, cfdm.Data):
         :Returns:
 
             `Data`
-                TODO
+                The new data array having all elements masked.
 
         **Examples:**
 
@@ -12052,8 +12125,6 @@ class Data(Container, cfdm.Data):
                 The collapsed array.
 
         **Examples:**
-
-            TODO
 
         """
         return self._collapse(
@@ -12841,8 +12912,6 @@ class Data(Container, cfdm.Data):
 
         **Examples:**
 
-        TODO
-
         """
 
         def _slice_to_partition(data, indices):
@@ -13423,7 +13492,7 @@ class Data(Container, cfdm.Data):
     @_deprecated_kwarg_check("i")
     @_inplace_enabled(default=False)
     def log(self, base=None, inplace=False, i=False):
-        """TODO.
+        """Takes the logarithm of the data array.
 
         :Parameters:
 
@@ -13853,7 +13922,7 @@ class Data(Container, cfdm.Data):
         calendar=None,
         chunk=True,
     ):
-        """Return a new data array of given shape and type, filled with
+        """Returns a new data array of given shape and type, filled with
         the given value.
 
         .. seealso:: `empty`, `ones`, `zeros`
@@ -13879,7 +13948,6 @@ class Data(Container, cfdm.Data):
         :Returns:
 
             `Data`
-                TODO
 
         **Examples:**
 
@@ -13898,14 +13966,16 @@ class Data(Container, cfdm.Data):
 
     @classmethod
     def ones(cls, shape, dtype=None, units=None, calendar=None, chunk=True):
-        """TODO."""
+        """Returns a new array filled with ones of set shape and
+        type."""
         return cls.full(
             shape, 1, dtype=dtype, units=units, calendar=calendar, chunk=chunk
         )
 
     @classmethod
     def zeros(cls, shape, dtype=None, units=None, calendar=None, chunk=True):
-        """TODO."""
+        """Returns a new array filled with zeros of set shape and
+        type."""
         return cls.full(
             shape, 0, dtype=dtype, units=units, calendar=calendar, chunk=chunk
         )
@@ -13944,7 +14014,6 @@ class Data(Container, cfdm.Data):
         :Returns:
 
             `Data` or `None`
-                TODO
 
         **Examples:**
 
@@ -14074,13 +14143,23 @@ class Data(Container, cfdm.Data):
     @_inplace_enabled(default=False)
     @_deprecated_kwarg_check("i")
     def roll(self, axis, shift, inplace=False, i=False):
-        """A lot like `numpy.roll`
+        """Roll array elements along a given axis.
 
-        TODODASK  - note that it works for multiple axes
-
-        Will roll non-cyclic axes
+        Equivalent in function to `numpy.roll`.
 
         :Parameters:
+
+            axis: `int`
+                Select the axis over which the elements are to be rolled.
+                removed. The *axis* parameter is an integer that selects
+                the axis corresponding to the given position in the list
+                of axes of the data.
+
+                *Parameter example:*
+                  Convolve the second axis: ``axis=1``.
+
+                *Parameter example:*
+                  Convolve the last axis: ``axis=-1``.
 
             {{inplace: `bool`, optional}}
 
@@ -14229,7 +14308,7 @@ class Data(Container, cfdm.Data):
         i=False,
         _preserve_partitions=False,
     ):
-        """TODO.
+        """Collapse axes with the sum of weights.
 
         Missing data array elements are omitted from the calculation.
 
@@ -14292,7 +14371,7 @@ class Data(Container, cfdm.Data):
         i=False,
         _preserve_partitions=False,
     ):
-        """TODO.
+        """Collapse axes with the sum of squares of weights.
 
         Missing data array elements are omitted from the calculation.
 
@@ -14548,8 +14627,6 @@ class Data(Container, cfdm.Data):
 
         **Examples:**
 
-        TODO
-
         """
         units = self.Units
         if units:
@@ -14573,7 +14650,8 @@ class Data(Container, cfdm.Data):
         self, axes, stop=None, chunks=False, min_step=1, mode="dictionary"
     ):
         """Return a dictionary of Data objects, which are the m
-        dimensional sections of this n dimensional Data object, where m
+        dimensional sections of this n dimensional Data object, where m.
+
         <= n. The keys of the dictionary are the indices of the sections
         in the original Data object. The m dimensions that are not
         sliced are marked with None as a placeholder making it possible
@@ -14730,7 +14808,8 @@ class Data(Container, cfdm.Data):
         _DEPRECATION_ERROR_ATTRIBUTE(self, "dtvarray")  # pragma: no cover
 
     def files(self):
-        """Deprecated at version 3.4.0, use method `get_` instead."""
+        """Deprecated at version 3.4.0, use method `get_filenames`
+        instead."""
         _DEPRECATION_ERROR_METHOD(
             self,
             "files",

@@ -1,6 +1,5 @@
 import numpy
 
-from ..constants import _file_to_fh
 from ..functions import parse_indices, get_subspace
 from .functions import _open_um_file, _close_um_file
 
@@ -62,10 +61,14 @@ class UMArray(abstract.FileArray):
                 used.
 
             fmt: `str`, optional
+                The file format of the UM file containing the array
+                ('FF' or 'PP').
 
             word_size: `int`, optional
+                Word size in bytes (4 or 8).
 
             byte_ordering: `str`, optional
+                The endianness of the data ('little_endian' or 'big_endian').
 
         **Examples:**
 
@@ -198,32 +201,71 @@ class UMArray(abstract.FileArray):
 
     @property
     def header_offset(self):
-        """TODO."""
+        """The start position in the file of the header.
+
+        :Returns:
+
+            `int`
+
+        """
         return self._get_component("header_offset")
 
     @property
     def data_offset(self):
-        """TODO."""
+        """The start position in the file of the data array.
+
+        :Returns:
+
+            `int`
+
+        """
         return self._get_component("data_offset")
 
     @property
     def disk_length(self):
-        """TODO."""
+        """The number of words on disk for the data array.
+
+        :Returns:
+
+            `int`
+
+        """
         return self._get_component("disk_length")
 
     @property
     def fmt(self):
-        """TODO."""
+        """The file format of the UM file containing the array.
+
+        :Returns:
+
+            `str`
+                'FF' or 'PP'
+
+        """
         return self._get_component("fmt")
 
     @property
     def byte_ordering(self):
-        """TODO."""
+        """The endianness of the data.
+
+        :Returns:
+
+            `str`
+                'little_endian' or 'big_endian'
+
+        """
         return self._get_component("byte_ordering")
 
     @property
     def word_size(self):
-        """TODO."""
+        """Word size in bytes.
+
+        :Returns:
+
+            `int`
+                4 or 8
+
+        """
         return self._get_component("word_size")
 
     def close(self):

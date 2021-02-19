@@ -2,32 +2,40 @@ import numpy as np
 
 from . import abstract
 
-from ..functions import parse_indices, get_subspace
+from ..functions import parse_indices
 from ..constants import masked as cf_masked
 
 
 class FilledArray(abstract.Array):
-    """TODO."""
+    """An underlying filled array."""
 
     def __init__(self, dtype=None, shape=None, size=None, fill_value=None):
         """**Initialization**
 
-        :Parameters:
+            :Parameters:
 
-            dtype : numpy.dtype
-                The numpy data type of the data array.
+                dtype : numpy.dtype
+                    The numpy data type of the data array.
 
-            shape : tuple
-                The data array's dimension sizes.
+                ndim : int
+                    Number of dimensions in the data array.
 
-            size : int
-                Number of elements in the data array.
+                shape : tuple
+                    The data array's dimension sizes.
 
-            fill_value : scalar, optional
+                size : int
+                    Number of elements in the data array.
+
+                fill_value : scalar, optional
+
+        #        masked_all: `bool`
 
         """
         super().__init__(
-            dtype=dtype, shape=shape, size=size, fill_value=fill_value
+            dtype=dtype,
+            shape=shape,
+            size=size,
+            fill_value=fill_value,
         )
 
     def __getitem__(self, indices):
@@ -187,26 +195,26 @@ class FilledArray(abstract.Array):
         return self._get_component("size")
 
     def fill_value(self):
-        """TODO."""
+        """Return the data array missing data value."""
         return self._get_component("fill_value")
 
     @property
     def array(self):
-        """TODO."""
+        """An independent numpy array containing the data."""
         return self[...]
 
     def reshape(self, newshape):
-        """TODO."""
+        """Give a new shape to the array."""
         new = self.copy()
         new.shape = newshape
         return new
 
     def resize(self, newshape):
-        """TODO."""
+        """Change the shape and size of the array in-place."""
         self.shape = newshape
 
     def view(self):
-        """TODO."""
+        """Return a view of the entire array."""
         return self[...]
 
 

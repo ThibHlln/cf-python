@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 
 class RaggedIndexedContiguousSubarray(abstract.CompressedSubarray):
-    """TODO."""
+    """An underlying indexed ragged contiguous sub-array."""
 
     def __getitem__(self, indices):
         """x.__getitem__(indices) <==> x[indices]

@@ -115,7 +115,26 @@ class Bounds(mixin.Coordinate, mixin.PropertiesData, cfdm.Bounds):
 
          **Examples:**
 
-         TODO
+         >>> c.has_bounds()
+         False
+         >>> c.contiguous()
+         False
+
+         >>> print(c.bounds[:, 0])
+         [  0.5   1.5   2.5   3.5 ]
+         >>> print(c.bounds[:, 1])
+         [  1.5   2.5   3.5   4.5 ]
+         >>> c.contiguous()
+         True
+
+         >>> print(c.bounds[:, 0])
+         [  0.5   1.5   2.5   3.5 ]
+         >>> print(c.bounds[:, 1])
+         [  2.5   3.5   4.5   5.5 ]
+         >>> c.contiguous()
+         True
+         >>> c.contiguous(overlap=False)
+         False
 
         """
         data = self.get_data(None)

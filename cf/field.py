@@ -18,13 +18,12 @@ from numpy import array_equal as numpy_array_equal
 from numpy import asanyarray as numpy_asanyarray
 from numpy import can_cast as numpy_can_cast
 from numpy import diff as numpy_diff
+from numpy import delete as numpy_delete
 from numpy import empty as numpy_empty
 from numpy import finfo as numpy_finfo
 from numpy import full as numpy_full
-from numpy import isnan as numpy_isnan
 from numpy import nan as numpy_nan
 from numpy import ndarray as numpy_ndarray
-from numpy import ndim as numpy_ndim
 from numpy import pi as numpy_pi
 from numpy import prod as numpy_prod
 from numpy import reshape as numpy_reshape
@@ -40,20 +39,16 @@ from numpy.ma import isMA as numpy_ma_isMA
 
 from numpy.ma import MaskedArray as numpy_ma_MaskedArray
 from numpy.ma import where as numpy_ma_where
-from numpy.ma import masked_invalid as numpy_ma_masked_invalid
 
 import cfdm
 
 from . import AuxiliaryCoordinate
 from . import Bounds
-from . import CellMeasure
 from . import CellMethod
-from . import CoordinateReference
 from . import DimensionCoordinate
 from . import Domain
 from . import DomainAncillary
 from . import DomainAxis
-from . import FieldAncillary
 from . import Flags
 from . import Constructs
 from . import FieldList
@@ -64,7 +59,7 @@ from . import List
 
 from .constants import masked as cf_masked
 
-from .functions import parse_indices, chunksize, equals, _section
+from .functions import parse_indices, chunksize, _section
 from .functions import relaxed_identities as cf_relaxed_identities
 from .query import Query, ge, gt, le, lt, eq
 from .regrid import Regrid
@@ -628,7 +623,7 @@ class Field(mixin.PropertiesData, cfdm.Field):
         else:
             if data is None:
                 raise ValueError(
-                    "Can't assign to a {} from a {!r} with no data}".format(
+                    "Can't assign to a {} from a {!r} with no data".format(
                         self.__class__.__name__, value.__class__.__name__
                     )
                 )
@@ -707,8 +702,6 @@ class Field(mixin.PropertiesData, cfdm.Field):
         }
 
         """
-        a = {}
-
         # ------------------------------------------------------------
         # Map each axis identity to its identifier, if such a mapping
         # exists.
@@ -865,11 +858,11 @@ class Field(mixin.PropertiesData, cfdm.Field):
         }
 
     def _is_broadcastable(self, shape):
-        """TODO.
+        """Checks the field's data array is broadcastable to a shape.
 
         :Parameters:
 
-            shape1: sequence of `int`
+            shape: sequence of `int`
 
         :Returns:
 
@@ -965,7 +958,7 @@ class Field(mixin.PropertiesData, cfdm.Field):
 
             raise ValueError(
                 "Can't combine {!r} with {!r} due to incompatible data "
-                "shapes: {}, {})".format(
+                "shapes: {}, {}".format(
                     self.__class__.__name__,
                     other.__class__.__name__,
                     self.shape,
@@ -2491,7 +2484,8 @@ class Field(mixin.PropertiesData, cfdm.Field):
         # --- End: for
 
     def _coordinate_reference_axes(self, key):
-        """TODO.
+        """Returns the field's set of coordinate reference axes for a
+        key.
 
         :Parameters:
 
@@ -2520,7 +2514,7 @@ class Field(mixin.PropertiesData, cfdm.Field):
         return set(axes)
 
     def _conform_cell_methods(self):
-        """TODO.
+        """Changes the axes of the field's cell methods so they conform.
 
         :Parameters:
 
@@ -2563,7 +2557,7 @@ class Field(mixin.PropertiesData, cfdm.Field):
         verbose=None,
         axis_map=None,
     ):
-        """TODO.
+        """True if coordinate reference constructs are equivalent.
 
         Two real numbers ``x`` and ``y`` are considered equal if
         ``|x-y|<=atol+rtol|y|``, where ``atol`` (the tolerance on absolute
@@ -2971,9 +2965,9 @@ class Field(mixin.PropertiesData, cfdm.Field):
         return other
 
     def _conform_for_data_broadcasting(self, other):
-        """TODO.
+        """Conforms the field with another, ready for data broadcasting.
 
-        Note that *other* is not changed in-place.
+        Note that the other field, *other*, is not changed in-place.
 
         :Parameters:
 
@@ -3015,14 +3009,13 @@ class Field(mixin.PropertiesData, cfdm.Field):
         verbose=None,
         axis_map=None,
     ):
-        """TODO.
+        """True if the field has equivalent construct data to another.
 
         Two real numbers ``x`` and ``y`` are considered equal if
         ``|x-y|<=atol+rtol|y|``, where ``atol`` (the tolerance on absolute
         differences) and ``rtol`` (the tolerance on relative differences)
         are positive, typically very small numbers. See the *atol* and
         *rtol* parameters.
-
 
         :Parameters:
 
@@ -4387,7 +4380,7 @@ class Field(mixin.PropertiesData, cfdm.Field):
         components=False,
         methods=False,
     ):
-        """TODO.
+        """Creates weights for the field construct's data array.
 
         :Parameters:
 
@@ -4466,7 +4459,7 @@ class Field(mixin.PropertiesData, cfdm.Field):
         return True
 
     def _weights_field(self, fields, comp, weights_axes, methods=False):
-        """TODO."""
+        """Creates a weights field."""
         s = self.analyse_items()
 
         for w in fields:
@@ -4613,7 +4606,7 @@ class Field(mixin.PropertiesData, cfdm.Field):
         return_areas=False,
         methods=False,
     ):
-        """TODO.
+        """Creates area weights for polygon geometry cells.
 
         .. versionadded:: 3.2.0
 
@@ -4648,7 +4641,7 @@ class Field(mixin.PropertiesData, cfdm.Field):
 
             raise ValueError(
                 "No polygon geometries for {!r} axis".format(
-                    self.constructs.domain_axis_identity(domin_axis)
+                    self.constructs.domain_axis_identity(domain_axis)
                 )
             )
 
@@ -4868,7 +4861,7 @@ class Field(mixin.PropertiesData, cfdm.Field):
         great_circle=False,
         methods=False,
     ):
-        """TODO.
+        """Creates line-length weights for line geometries.
 
         .. versionadded:: 3.2.0
 
@@ -4897,7 +4890,7 @@ class Field(mixin.PropertiesData, cfdm.Field):
 
             raise ValueError(
                 "No line geometries for {!r} axis".format(
-                    self.constructs.domain_axis_identity(domin_axis)
+                    self.constructs.domain_axis_identity(domain_axis)
                 )
             )
 
@@ -5000,7 +4993,7 @@ class Field(mixin.PropertiesData, cfdm.Field):
         great_circle=False,
         methods=False,
     ):
-        """TODO.
+        """Creates volume weights for polygon geometry cells.
 
         .. versionadded:: 3.2.0
 
@@ -5387,7 +5380,7 @@ class Field(mixin.PropertiesData, cfdm.Field):
     def _weights_yyy(
         self, domain_axis, geometry_type, methods=False, auto=False
     ):
-        """TODO.
+        """Checks whether weights can be created for given coordinates.
 
         .. versionadded:: 3.2.0
 
@@ -6405,15 +6398,17 @@ class Field(mixin.PropertiesData, cfdm.Field):
         :Parameters:
 
             fields: `FieldList`
-                TODO
+                The sequence of fields to concatenate.
 
             axis: `int`, optional
-                TODO
+                The axis along which the arrays will be joined. The
+                default is 0. Note that scalar arrays are treated as if
+                they were one dimensional.
 
         :Returns:
 
             `Field`
-                TODO
+                The field generated from the concatenation of input fields.
 
         """
         if isinstance(fields, cls):
@@ -8699,7 +8694,8 @@ class Field(mixin.PropertiesData, cfdm.Field):
                   ``identity='ncvar%lat_lon'``
 
             construct: optional
-                TODO
+                The coordinate reference construct to remove. This may
+                alternatively be specified via the *identity* parameter.
 
             default: optional
                 Return the value of the *default* parameter if the
@@ -8785,7 +8781,7 @@ class Field(mixin.PropertiesData, cfdm.Field):
         :Parameters:
 
             identity:
-               Select the domain axis construct by one of:
+                Select the domain axis construct by one of:
 
                   * An identity or key of a 1-d coordinate construct that
                     whose data spans the domain axis construct.
@@ -8924,7 +8920,7 @@ class Field(mixin.PropertiesData, cfdm.Field):
     def get_coordinate_reference(
         self, identity=None, key=False, construct=None, default=ValueError()
     ):
-        """TODO.
+        """Returns selected coordinate reference constructs.
 
         .. versionadded:: 3.0.2
 
@@ -10845,7 +10841,7 @@ class Field(mixin.PropertiesData, cfdm.Field):
             elif (
                 within is not None or over is not None
             ) and group_by == "coords":
-                raise valueError(
+                raise ValueError(
                     "Can't collapse: group_by parameter can't be "
                     "'coords' for a climatological time collapse."
                 )
@@ -11244,7 +11240,10 @@ class Field(mixin.PropertiesData, cfdm.Field):
         axis_in=None,
         verbose=None,
     ):
-        """TODO.
+        """Implements a grouped collapse on a field.
+
+        A grouped collapse is one for which an axis is not collapsed
+        completely to size 1.
 
         :Parameters:
 
@@ -11272,7 +11271,7 @@ class Field(mixin.PropertiesData, cfdm.Field):
             group_by_coords,
             extra_condition,
         ):
-            """TODO.
+            """Returns configuration for a general collapse.
 
             :Parameter:
 
@@ -11319,7 +11318,8 @@ class Field(mixin.PropertiesData, cfdm.Field):
             group_by,
             extra_condition=None,
         ):
-            """TODO.
+            """Prepares for a collapse where the group is a
+            TimeDuration.
 
             :Parameters:
 
@@ -11396,7 +11396,7 @@ class Field(mixin.PropertiesData, cfdm.Field):
             group_by,
             extra_condition=None,
         ):
-            """TODO.
+            """Prepares for a collapse over some TimeDuration.
 
             :Parameters:
 
@@ -11475,7 +11475,8 @@ class Field(mixin.PropertiesData, cfdm.Field):
             group_by,
             extra_condition=None,
         ):
-            """TODO.
+            """Prepares for a collapse where the group is a data
+            interval.
 
             :Returns:
 
@@ -11528,7 +11529,7 @@ class Field(mixin.PropertiesData, cfdm.Field):
             group_span=None,
             within=False,
         ):
-            """TODO.
+            """Processes a group selection.
 
             :Parameters:
 
@@ -11595,7 +11596,7 @@ class Field(mixin.PropertiesData, cfdm.Field):
             return classification, n
 
         def _discern_runs(classification, within=False):
-            """TODO.
+            """Processes a group classification.
 
             :Parameters:
 
@@ -11630,7 +11631,8 @@ class Field(mixin.PropertiesData, cfdm.Field):
             return classification
 
         def _discern_runs_within(classification, coord):
-            """TODO."""
+            """Processes group classification for a 'within'
+            collapse."""
             size = classification.size
             if size < 2:
                 return classification
@@ -11651,12 +11653,14 @@ class Field(mixin.PropertiesData, cfdm.Field):
             return classification
 
         def _tyu(coord, group_by, time_interval):
-            """TODO.
+            """Returns bounding values and limits for a general
+            collapse.
 
             :Parameters:
 
                 coord: `DimensionCoordinate`
-                    TODO
+                    The dimension coordinate construct associated with
+                    the collapse.
 
                 group_by: `str`
                     As for the *group_by* parameter of the `collapse` method.
@@ -11715,7 +11719,7 @@ class Field(mixin.PropertiesData, cfdm.Field):
             return (lower, upper, lower_limit, upper_limit)
 
         def _group_weights(weights, iaxis, index):
-            """TODO.
+            """Subspaces weights components.
 
             Subspace weights components.
 
@@ -11743,8 +11747,6 @@ class Field(mixin.PropertiesData, cfdm.Field):
                 >>> weights
 
                 >>> _group_weights(weights, 2, [2, 3, 40])
-
-                >>> _group_weights(weights, 1, slice(2, 56))
 
             """
             if not isinstance(weights, dict):
@@ -11813,7 +11815,7 @@ class Field(mixin.PropertiesData, cfdm.Field):
 
         # If group, rolling window, classification, etc, do something
         # special for size one axes - either return unchanged
-        # (possibly mofiying cell methods with , e.g, within_dyas', or
+        # (possibly mofiying cell methods with , e.g, within_days', or
         # raising an exception for 'can't match', I suppose.
 
         classification = None
@@ -12857,9 +12859,9 @@ class Field(mixin.PropertiesData, cfdm.Field):
         :Parameters:
 
             axis:
-                Select the domain axis to, generally defined by that which
-                would be selected by passing the given axis description to
-                a call of the field construct's `domain_axis` method. For
+                Select the domain axis to insert, generally defined by that
+                which would be selected by passing the given axis description
+                to a call of the field construct's `domain_axis` method. For
                 example, for a value of ``'X'``, the domain axis construct
                 returned by ``f.domain_axis('X')`` is selected.
 
@@ -13824,7 +13826,9 @@ class Field(mixin.PropertiesData, cfdm.Field):
         :Parameters:
 
             kwargs: optional
-                TODO
+                A dictionary of keyword arguments to pass to the `indices`
+                method to define the criteria to meet for a element to be
+                set as `True`.
 
         :Returns:
 
@@ -15649,19 +15653,12 @@ class Field(mixin.PropertiesData, cfdm.Field):
 
         .. seealso:: `argmin`, `where`
 
-        :Parameters:
-
-        :Returns:
-
-            `Field`
-                TODO
-
         **Examples:**
 
         >>> g = f.argmax('T')
 
         """
-        print("not ready")
+        print("This method is not ready for use.")
         return
 
         standard_name = None
